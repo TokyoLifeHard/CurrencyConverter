@@ -1,4 +1,4 @@
-package com.сurrencyсonverter.entity;
+package com.currencyconverter.entity;
 
 
 

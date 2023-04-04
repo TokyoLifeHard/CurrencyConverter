@@ -1,4 +1,4 @@
-package com.сurrencyсonverter.config;
+package com.currencyconverter.config;
 
 
 import org.springframework.boot.web.client.RestTemplateBuilder;

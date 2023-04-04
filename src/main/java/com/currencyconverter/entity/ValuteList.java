@@ -1,4 +1,4 @@
-package com.сurrencyсonverter.entity;
+package com.currencyconverter.entity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
