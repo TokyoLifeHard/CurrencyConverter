@@ -2,6 +2,7 @@ package com.currencyconverter.controller;
 
 import com.currencyconverter.cache.CacheService;
 import com.currencyconverter.entity.Valute;
+import com.currencyconverter.exeptions.NoSuchValuteExeption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +34,10 @@ public class ValutesController {
         Valute fromValute = cacheService.getValute(params.get("from"));
         Valute toValute = cacheService.getValute(params.get("to"));
 
+        if (fromValute == null || toValute == null){
+            throw  new NoSuchValuteExeption("No such valute");
+        }
+
         BigDecimal fromdecim = new BigDecimal(fromValute.getValue().replace(",","."));
         BigDecimal todecim = new BigDecimal(toValute.getValue().replace(",","."));
 
@@ -42,5 +47,12 @@ public class ValutesController {
         return new ResponseEntity<Map<String,String>>(resp, HttpStatus.valueOf(200));
 
 
+    }
+
+    @ExceptionHandler(NoSuchValuteExeption.class)
+    public ResponseEntity<Map<String,String>> handleNoSuchValuteExeption(NoSuchValuteExeption e){
+        Map<String,String> map = new HashMap<>(1);
+        map.put("message",e.getMessage());
+        return new ResponseEntity<Map<String,String>>(map,HttpStatus.valueOf(200));
     }
 }
