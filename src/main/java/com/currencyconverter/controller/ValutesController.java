@@ -4,26 +4,28 @@ import com.currencyconverter.cache.CacheService;
 import com.currencyconverter.entity.Valute;
 import com.currencyconverter.exeptions.NoSuchValuteExeption;
 import com.currencyconverter.exeptions.SameValuteExeption;
+import com.currencyconverter.service.ConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@RestController
+@Controller
 @RequestMapping("/api/valute")
 public class ValutesController {
 
     @Autowired
     CacheService cacheService;
+    @Autowired
+    ConvertService convertService;
 
     @GetMapping("/{name}")
+    @ResponseBody
     public Valute getValute(@PathVariable String name){
         return cacheService.getValute(name);
     }
@@ -43,12 +45,10 @@ public class ValutesController {
             throw new SameValuteExeption("You enter same valutes");
         }
 
-        BigDecimal fromdecim = new BigDecimal(fromValute.getValue().replace(",","."));
-        BigDecimal todecim = new BigDecimal(toValute.getValue().replace(",","."));
+        String curse =convertService.convert(fromValute,toValute);
 
-        BigDecimal curse = fromdecim.divide(todecim, RoundingMode.UP);
         Map<String,String> resp = new HashMap<>();
-        resp.put("message","for 1 "+fromValute.getCharCode()+" your'll get "+curse.toString()+" "+ toValute.getCharCode());
+        resp.put("message","for 1 "+fromValute.getCharCode()+" your'll get "+curse+" "+ toValute.getCharCode());
         return new ResponseEntity<Map<String,String>>(resp, HttpStatus.valueOf(200));
 
 
