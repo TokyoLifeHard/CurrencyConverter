@@ -3,6 +3,7 @@ package com.currencyconverter.controller;
 import com.currencyconverter.cache.CacheService;
 import com.currencyconverter.entity.Valute;
 import com.currencyconverter.exeptions.NoSuchValuteExeption;
+import com.currencyconverter.exeptions.SameValuteExeption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +39,10 @@ public class ValutesController {
             throw  new NoSuchValuteExeption("No such valute");
         }
 
+        if(fromValute.equals(toValute)){
+            throw new SameValuteExeption("You enter same valutes");
+        }
+
         BigDecimal fromdecim = new BigDecimal(fromValute.getValue().replace(",","."));
         BigDecimal todecim = new BigDecimal(toValute.getValue().replace(",","."));
 
@@ -51,6 +56,13 @@ public class ValutesController {
 
     @ExceptionHandler(NoSuchValuteExeption.class)
     public ResponseEntity<Map<String,String>> handleNoSuchValuteExeption(NoSuchValuteExeption e){
+        Map<String,String> map = new HashMap<>(1);
+        map.put("message",e.getMessage());
+        return new ResponseEntity<Map<String,String>>(map,HttpStatus.valueOf(200));
+    }
+
+    @ExceptionHandler(SameValuteExeption.class)
+    public ResponseEntity<Map<String,String>> handleSameValuteExeption(SameValuteExeption e){
         Map<String,String> map = new HashMap<>(1);
         map.put("message",e.getMessage());
         return new ResponseEntity<Map<String,String>>(map,HttpStatus.valueOf(200));
