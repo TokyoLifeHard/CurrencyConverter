@@ -23,19 +23,24 @@ public class CacheService {
     CacheManager cacheManager;
     @PostConstruct
     public void init(){
-       Cache valutes = cacheManager.getCache("valutes");
-       ValuteList valuteList = valuteServiceImp.getValutes();
-        for (Valute valute : valuteList.getElementList()) {
-            valutes.put(valute.getName(),valute);
-        }
+        addValutesToCache();
     }
 
     @Cacheable
     public Valute getValute(String name){
         return (Valute) cacheManager.getCache("valutes").get(name);
     }
-    @Scheduled(cron = "@midnight")
+    @Scheduled(cron = "0 15 1 * * *")
     public void refreshCache(){
+        cacheManager.getCache("valutes").clear();
+        addValutesToCache();
+    }
 
+    public void addValutesToCache(){
+        Cache valutes = cacheManager.getCache("valutes");
+        ValuteList valuteList = valuteServiceImp.getValutes();
+        for (Valute valute : valuteList.getElementList()) {
+            valutes.put(valute.getName(),valute);
+        }
     }
 }
