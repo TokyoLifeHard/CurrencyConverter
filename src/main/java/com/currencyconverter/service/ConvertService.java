@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 @Service
 public class ConvertService {
 
-    public String convert(Valute fromValute,Valute toValute){
+    public String calcCurse(Valute fromValute, Valute toValute){
 
         BigDecimal fromdecim = new BigDecimal(fromValute.getValue().replace(",","."));
         BigDecimal todecim = new BigDecimal(toValute.getValue().replace(",","."));
@@ -20,5 +20,9 @@ public class ConvertService {
         return  fromdecim.divide(todecim, RoundingMode.UP).toString();
     }
 
-
+    public String convertFromAmount(Valute fromValute,Valute toValute,String fromValuteAmount){
+        String convert = calcCurse(fromValute, toValute);
+        BigDecimal result = new BigDecimal(convert);
+        return result.multiply(new BigDecimal(fromValuteAmount)).toString();
+    }
 }
