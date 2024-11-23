@@ -21,19 +21,20 @@ public class Valute {
     String name;
     @JacksonXmlProperty(localName = "Value")
     String value;
-
+    @JacksonXmlProperty(localName = "VunitRate")
+    String vunitRate;
     public Valute() {
     }
 
-    public Valute(String ID, Integer numCode, String charCode, Integer nominal, String name, String value) {
+    public Valute(String ID, Integer numCode, String charCode, Integer nominal, String name, String value, String vunitRate) {
         this.ID = ID;
         this.numCode = numCode;
         this.charCode = charCode;
         this.nominal = nominal;
         this.name = name;
         this.value = value;
+        this.vunitRate = vunitRate;
     }
-
 
     public Integer getNumCode() {
         return numCode;
@@ -81,6 +82,14 @@ public class Valute {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getVunitRate() {
+        return vunitRate;
+    }
+
+    public void setVunitRate(String vunitRate) {
+        this.vunitRate = vunitRate;
     }
 
     @Override
