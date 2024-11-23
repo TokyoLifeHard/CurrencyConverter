@@ -5,8 +5,6 @@ import com.currencyconverter.entity.Valute;
 import com.currencyconverter.exeptions.NoSuchValuteExeption;
 import com.currencyconverter.exeptions.SameValuteExeption;
 import com.currencyconverter.service.ConvertService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
